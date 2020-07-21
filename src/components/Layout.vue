@@ -17,7 +17,6 @@
     .layout {
         display: flex;
         flex-direction: column;
-        border: 1px solid red;
         height: 100vh;
 
         .content {

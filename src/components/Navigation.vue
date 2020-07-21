@@ -1,20 +1,18 @@
 <template>
-    <div class="navigation">
-        <div id="nav">
-            <router-link to="/labels">
-                <Icon name="icon_label"/>
-                标签
-            </router-link>
-            <router-link to="/money">
-                <Icon name="icon_money"/>
-                记一笔
-            </router-link>
-            <router-link to="/statistics">
-                <Icon name="icon_statistics" />
-                统计
-            </router-link>
-        </div>
-    </div>
+    <nav class="navigation">
+        <router-link to="/labels" class="item">
+            <Icon name="icon_label" class="ico"/>
+            标签
+        </router-link>
+        <router-link to="/money" class="item">
+            <Icon name="icon_money" class="ico"/>
+            记一笔
+        </router-link>
+        <router-link to="/statistics" class="item">
+            <Icon name="icon_statistics" class="ico"/>
+            统计
+        </router-link>
+    </nav>
 </template>
 
 <script lang='ts'>
@@ -26,19 +24,28 @@
 
 <style lang='scss' scoped>
 
-    #nav {
+    nav {
         display: flex;
         text-align: center;
         box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+        padding: 5px 0;
 
-
-        a {
+        .item {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             font-weight: bold;
             color: #2c3e50;
+            font-size: 32px;
 
             &.router-link-exact-active {
                 color: #42b983;
+            }
+
+            > .ico {
+                width: 2em;
+                height: 2em;
             }
         }
     }

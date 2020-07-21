@@ -1,9 +1,7 @@
 <template>
-    <div class="icon">
-        <svg class="icon" >
-            <use :xlink:href="'#'+name"></use>
-        </svg>
-    </div>
+    <svg class="icon">
+        <use :xlink:href="'#'+name"></use>
+    </svg>
 </template>
 
 <script lang='ts'>
@@ -21,13 +19,12 @@
 </script>
 
 <style lang='scss' scoped>
-    div {
-        .icon {
-            width: 3em;
-            height: 3em;
-            vertical-align: -0.15em;
-            fill: currentColor;
-            overflow: hidden;
-        }
+    .icon {
+        width: 1em;
+        height: 1em;
+        vertical-align: -0.15em;
+        fill: currentColor;
+        overflow: hidden;
+        font-size: inherit;
     }
 </style>
