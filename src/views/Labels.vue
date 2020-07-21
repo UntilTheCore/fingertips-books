@@ -1,7 +1,8 @@
 <template>
     <div class="labels">
-        <h1>labels</h1>
-        <Nav />
+        <Layout>
+            <h1>Labels</h1>
+        </Layout>
     </div>
 </template>
 
@@ -12,9 +13,4 @@
 </script>
 
 <style lang='scss' scoped>
-    .labels {
-        position: relative;
-        border: 1px solid red;
-        min-height: 100vh;
-    }
 </style>

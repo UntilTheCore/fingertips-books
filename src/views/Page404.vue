@@ -1,6 +1,7 @@
 <template>
     <div class="page404">
         <h1>访问的页面不存在!</h1>
+        <router-link to="/">点击返回首页</router-link>
     </div>
 </template>
 

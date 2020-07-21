@@ -1,5 +1,5 @@
 <template>
-    <div class="c-navigation">
+    <div class="navigation">
         <div id="nav">
             <router-link to="/labels">标签</router-link>
             <router-link to="/money">记一笔</router-link>
@@ -18,9 +18,6 @@
 
     #nav {
         display: flex;
-        position: absolute;
-        bottom: 0;
-        min-width: 100%;
         box-shadow: 0 0 3px rgba(0,0,0,.3);
 
         a {

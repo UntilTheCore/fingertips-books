@@ -1,7 +1,8 @@
 <template>
-    <div class="v-money">
-        <h1>money</h1>
-        <Nav />
+    <div class="money">
+        <Layout>
+            <h1>Money</h1>
+        </Layout>
     </div>
 </template>
 
@@ -12,9 +13,4 @@
 </script>
 
 <style lang='scss' scoped>
-    .v-money {
-        position: relative;
-        border: 1px solid red;
-        min-height: 100vh;
-    }
 </style>

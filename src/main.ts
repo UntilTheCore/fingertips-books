@@ -6,10 +6,10 @@ import store from '@/store';
 Vue.config.productionTip = false;
 
 // 全局组件注册
-// c 开头的是组件
-// v 开头的是视图
 import Nav from '@/components/Navigation.vue'
+import Layout from '@/components/Layout.vue';
 Vue.component('Nav',Nav)
+Vue.component('Layout',Layout)
 new Vue({
     router,
     store,
