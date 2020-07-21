@@ -28,7 +28,10 @@
         box-sizing: border-box;
     }
 
-    a { text-decoration: none;}
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
 
     #app {
         font-family: Avenir, Helvetica, Arial, sans-serif;

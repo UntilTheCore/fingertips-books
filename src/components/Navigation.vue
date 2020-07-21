@@ -1,15 +1,15 @@
 <template>
     <nav class="navigation">
         <router-link to="/labels" class="item">
-            <Icon name="icon_label" class="ico"/>
+            <Icon name="label" class="ico"/>
             标签
         </router-link>
         <router-link to="/money" class="item">
-            <Icon name="icon_money" class="ico"/>
+            <Icon name="money" class="ico"/>
             记一笔
         </router-link>
         <router-link to="/statistics" class="item">
-            <Icon name="icon_statistics" class="ico"/>
+            <Icon name="statistics" class="ico"/>
             统计
         </router-link>
     </nav>
@@ -36,7 +36,6 @@
             flex-direction: column;
             align-items: center;
             font-weight: bold;
-            color: #2c3e50;
             font-size: 32px;
 
             &.router-link-exact-active {
