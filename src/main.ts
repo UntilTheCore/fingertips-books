@@ -4,7 +4,6 @@ import router from '@/router';
 import store from '@/store';
 
 Vue.config.productionTip = false;
-
 // 全局组件注册
 import Nav from '@/components/Navigation.vue'
 import Layout from '@/components/Layout.vue';

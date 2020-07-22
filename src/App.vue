@@ -1,13 +1,22 @@
 <template>
     <div id="app">
         <router-view/>
-<!--        <Nav />-->
     </div>
 </template>
 
 <script lang="ts">
     export default {
-        name:'App'
+        name:'App',
+        mounted() {
+            // 动态获取视口大小
+            const vh = window.innerHeight;
+            document.documentElement.style.setProperty('--vh', `${vh}px`)
+
+            window.addEventListener('resize', () => {
+                const vh = window.innerHeight;
+                document.documentElement.style.setProperty('--vh', `${vh}px`)
+            })
+        },
     }
 </script>
 
@@ -28,10 +37,20 @@
         box-sizing: border-box;
     }
 
-    a {
+    body {
+        font-size: 16px;
+    }
+
+    /* 取消 a 标签一些默认样式 */
+    a,a:hover,a:active,a:visited,a:link,a:focus{
+        -webkit-tap-highlight-color:rgba(0,0,0,0);
+        -webkit-tap-highlight-color: transparent;
+        outline:none;
+        background: none;
         text-decoration: none;
         color: inherit;
     }
+
 
     #app {
         font-family: Avenir, Helvetica, Arial, sans-serif;
