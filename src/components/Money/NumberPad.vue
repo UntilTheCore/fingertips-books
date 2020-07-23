@@ -1,33 +1,75 @@
 <template>
     <div class="numberPad">
-        <div class="output">￥100</div>
+        <div class="output">{{outputContent}}</div>
         <div class="buttons">
-            <button>1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>刪除</button>
-            <button>4</button>
-            <button>5</button>
-            <button>6</button>
-            <button>清除</button>
-            <button>7</button>
-            <button>8</button>
-            <button>9</button>
-            <button class="ok">OK</button>
-            <button class="zero">0</button>
-            <button>.</button>
+            <button @click="getInput">1</button>
+            <button @click="getInput">2</button>
+            <button @click="getInput">3</button>
+            <button @click="deleteContent">刪除</button>
+            <button @click="getInput">4</button>
+            <button @click="getInput">5</button>
+            <button @click="getInput">6</button>
+            <button @click="clearContent">清除</button>
+            <button @click="getInput">7</button>
+            <button @click="getInput">8</button>
+            <button @click="getInput">9</button>
+            <button @click="ok" class="ok">OK</button>
+            <button @click="getInput" class="zero">0</button>
+            <button @click="getInput">.</button>
         </div>
     </div>
 </template>
 
 <script lang='ts'>
-    export default {
-        name: 'NumberPad'
-    };
+    import Vue from 'vue';
+    import { Component } from 'vue-property-decorator';
+
+    @Component
+    export default class NumberPad extends Vue {
+        outputContent = '0';
+
+        getInput(event: MouseEvent | TouchEvent) {
+            const target = (event.target as HTMLButtonElement);
+            const inputContent = target.textContent as string;
+            console.log(inputContent);
+
+            if ( this.outputContent.length >= 16 ) {
+                return;
+            }
+            if (this.outputContent.length === 16) { return; }
+            if (this.outputContent === '0') {
+                if ('0123456789'.indexOf(inputContent) >= 0) {
+                    this.outputContent = inputContent;
+                } else {
+                    this.outputContent += inputContent;
+                }
+                return;
+            }
+            if (this.outputContent.indexOf('.') >= 0 && inputContent === '.') {return;}
+            this.outputContent += inputContent;
+        }
+
+        deleteContent() {
+            if (this.outputContent.length === 1) {
+                this.outputContent= '0';
+            } else {
+                this.outputContent= this.outputContent.slice(0, -1);
+            }
+        }
+
+        clearContent() {
+            this.outputContent = '0';
+        }
+
+        ok() {
+            return;
+        }
+    }
 </script>
 
 <style lang='scss' scoped>
     @import "~@/assets/styles/helper.scss";
+
     .numberPad {
         .output {
             height: 72px;
