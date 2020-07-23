@@ -2,42 +2,7 @@
     <div class="labels">
         <Layout>
             <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
-            <h1>Labels</h1>
+            <div class="tt">123</div>
         </Layout>
     </div>
 </template>
@@ -49,5 +14,7 @@
 </script>
 
 <style lang='scss' scoped>
-
+    .tt {
+        background: #000;
+    }
 </style>

@@ -20,10 +20,9 @@
     export default {
         name: 'navigation',
         mounted() {
-            const nav = document.querySelector('.navigation')
             // 阻止安卓浏览器上对导航栏长按弹出浏览器菜单
             // 对国产流氓浏览器无效。
-            nav?.addEventListener('contextmenu', e => {
+            document?.querySelector('.navigation')?.addEventListener('contextmenu', e => {
                 e.preventDefault();
                 e.stopPropagation();
             })
@@ -32,11 +31,12 @@
 </script>
 
 <style lang='scss' scoped>
+    @import "~@/assets/styles/helper.scss";
 
     nav {
         display: flex;
         text-align: center;
-        box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+        @extend %outerShadow;
         padding: 5px 0;
 
         /* 取消a标签长按菜单 */
@@ -54,7 +54,7 @@
             align-items: center;
 
             &.selected {
-                color: #42b983;
+                color: $color-highlight;
             }
 
             > .ico {

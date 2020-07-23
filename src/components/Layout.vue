@@ -1,6 +1,6 @@
 <template>
     <div class="layout">
-        <div class="content">
+        <div class="content" :class="classPrefix && `${classPrefix}-content`">
             <slot />
         </div>
         <Nav class="nav"/>
@@ -10,6 +10,7 @@
 <script lang='ts'>
     export default {
         name: 'Layout',
+        props: ['classPrefix'],
         mounted() {
             // 开启元素滚动，用于处理iOS“橡皮筋”效果
             const content = document.querySelector('.content' );
@@ -18,14 +19,14 @@
             },{passive:false,capture:false});
 
             // 阻止在 iOS端滚到头后，停顿一会儿再滚带动整个页面发生滚动。
-            content?.addEventListener('touchmove', e => {
-                if(content.scrollTop <= 0){
-                    content.scrollTop = 1
-                }else if(content.scrollTop + content.clientHeight >= content.scrollHeight) {
-                    content.scrollTop = content.scrollHeight - content.clientHeight - 1;
-                }
-                e.stopPropagation();
-            },{passive:false,capture:false});
+            // content?.addEventListener('touchmove', e => {
+            //     if(content.scrollTop < 0){
+            //         content.scrollTop = 1
+            //     }else if(content.scrollTop + content.clientHeight >= content.scrollHeight) {
+            //         content.scrollTop = content.scrollHeight - content.clientHeight - 1;
+            //     }
+            //     e.stopPropagation();
+            // },{passive:false,capture:false});
         },
     };
 </script>
@@ -47,6 +48,7 @@
         /* 隐藏滚动条 */
         .content::-webkit-scrollbar {
             height: 0 !important;
+            width: 0 !important;
         }
 
         /* 防止Nav组件因content内容变多被压缩 */

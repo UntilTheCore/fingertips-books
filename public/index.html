@@ -7,39 +7,6 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
     <div id="app"></div>
-    <script>
-      window.onload = function() {
-        // 阻止双击放大
-        let lastTouchEnd = 0;
-        document.addEventListener('touchstart', function(event) {
-          if (event.touches.length > 1) {
-            event.preventDefault();
-          }
-        });
-        document.addEventListener('touchend', function(event) {
-          const now = (new Date()).getTime();
-          if (now - lastTouchEnd <= 300) {
-            event.preventDefault();
-          }
-          lastTouchEnd = now;
-        }, false);
-
-        // 阻止双指放大
-        document.addEventListener('gesturestart', function(event) {
-          event.preventDefault();
-        });
-        // 阻止页面滚动，用于优化iOS“橡皮筋”效果
-        window.addEventListener('touchmove', function (e) {
-          e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
-        }, {passive: false}); //passive 参数不能省略，用来兼容ios和android
-
-      };
-
-    </script>
-    <!-- built files will be auto injected -->
   </body>
 </html>

@@ -6,57 +6,61 @@
 
 <script lang="ts">
     export default {
-        name:'App',
-        mounted() {
-            // 动态获取视口大小
-            const vh = window.innerHeight;
-            document.documentElement.style.setProperty('--vh', `${vh}px`)
+        name: 'App',
+        methods: {
+            init(): void {
+                // 阻止双击放大
+                let lastTouchEnd = 0;
+                document.addEventListener('touchstart', function (event) {
+                    if ( event.touches.length > 1 ) {
+                        event.preventDefault();
+                    }
+                });
+                document.addEventListener('touchend', function (event) {
+                    const now = (new Date()).getTime();
+                    if ( now - lastTouchEnd <= 300 ) {
+                        event.preventDefault();
+                    }
+                    lastTouchEnd = now;
+                }, false);
 
-            window.addEventListener('resize', () => {
+                // 阻止双指放大
+                document.addEventListener('gesturestart', function (event) {
+                    event.preventDefault();
+                });
+
+                // 阻止页面滚动，用于优化iOS“橡皮筋”效果
+                window.addEventListener('touchmove', function (e) {
+                    e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
+                }, { passive: false }); //passive 参数不能省略，用来兼容ios和android
+
+                // 动态获取视口大小
                 const vh = window.innerHeight;
-                document.documentElement.style.setProperty('--vh', `${vh}px`)
-            })
+                document.documentElement.style.setProperty('--vh', `${ vh }px`);
+
+                window.addEventListener('resize', () => {
+                    const vh = window.innerHeight;
+                    document.documentElement.style.setProperty('--vh', `${ vh }px`);
+                });
+            }
         },
-    }
+        mounted(): void {
+            this.init();
+        },
+
+    };
 </script>
 
 <style lang="scss">
-
-    * {
-        padding: 0;
-        margin: 0;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
-    
-    *::after,
-    *::before {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
+    @import "~@/assets/styles/reset.scss";
+    @import '~@/assets/styles/helper.scss';
 
     body {
+        font-family: $font-hei;
         font-size: 16px;
-    }
-
-    /* 取消 a 标签一些默认样式 */
-    a,a:hover,a:active,a:visited,a:link,a:focus{
-        -webkit-tap-highlight-color:rgba(0,0,0,0);
-        -webkit-tap-highlight-color: transparent;
-        outline:none;
-        background: none;
-        text-decoration: none;
-        color: inherit;
-    }
-
-
-    #app {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
+        line-height: 1.5;
     }
+
 </style>
