@@ -63,6 +63,8 @@
 
         ok() {
             this.$emit('update:content',this.outputContent);
+            this.$emit('saveData');
+            this.outputContent = '0';
         }
     }
 </script>

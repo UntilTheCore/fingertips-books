@@ -1,10 +1,10 @@
 <template>
     <div class="money">
         <Layout class-prefix="layout">
-            <NumberPad :content="record.amount" @update:content="getContent" />
+            <NumberPad :content="record.amount" @update:content="getContent" @saveData="saveData"/>
             <Types :type.sync="record.type" />
             <Notes :note.sync="record.note"/>
-            <Tags :data-source.sync="record.tags" :selectTags.sync="record.selectTags"/>
+            <Tags :data-source.sync="tags" :selectTags.sync="record.selectTags"/>
         </Layout>
     </div>
 </template>
@@ -16,14 +16,14 @@
     import Notes from '@/components/Money/Notes.vue';
     import Tags from '@/components/Money/Tags.vue';
     import { Component, Watch } from 'vue-property-decorator';
-
+    const dbName = 'fingertipsbooks-recordList';
+    const recordList: Record[] = JSON.parse(window.localStorage.getItem(dbName) || '[]');
     type Record = {
-        tags: string[];
         selectTags: string[];
         type: string;
         note: string;
         amount: number;
-
+        createAt: Date;
     }
 
     @Component({
@@ -32,35 +32,34 @@
         }
     })
     export default class Money extends Vue {
+        tags = ['衣','食','住','行'];
         // 初始数据环境
         record: Record = {
-            tags: ['衣','食','住','行'],
             selectTags: [],
             type: '-',
             note: '',
-            amount: 0
+            amount: 0,
+            createAt: new Date()
         }
+        recordList: Record[] = recordList;
         getContent(content: string){
             this.record.amount = parseFloat(content);
             console.log(this.record.amount);
         }
-        @Watch('record.tags')
-        onTagsChanges() {
-            console.log('tags----------');
-            console.log(this.record.tags);
+        saveData() {
+            if(this.record.amount === 0) {
+                alert('金额是0？');
+                return;
+            } else {
+                const record1: Record = JSON.parse(JSON.stringify(this.record));
+                record1.createAt = new Date();
+                this.recordList.push(record1);
+            }
         }
-        @Watch('record.selectTags')
-        onSelectTagsChange() {
-            console.log('selectTags----------');
-            console.log(this.record.selectTags);
-        }
-        @Watch('record.type',{deep:true})
-        onTypeChange() {
-            console.log(this.record.type);
-        }
-        @Watch('record.note')
-        onNoteChange(){
-            console.log(this.record.note);
+
+        @Watch('recordList')
+        onRecordListChange(){
+            window.localStorage.setItem(dbName,JSON.stringify(this.recordList));
         }
 
     }
