@@ -16,15 +16,8 @@
     import Notes from '@/components/Money/Notes.vue';
     import Tags from '@/components/Money/Tags.vue';
     import { Component, Watch } from 'vue-property-decorator';
-    const dbName = 'fingertipsbooks-recordList';
-    const recordList: Record[] = JSON.parse(window.localStorage.getItem(dbName) || '[]');
-    type Record = {
-        selectTags: string[];
-        type: string;
-        note: string;
-        amount: number;
-        createAt: Date;
-    }
+    import model from '@/model';
+    const recordList = model.fetch()
 
     @Component({
         components: {
@@ -34,14 +27,14 @@
     export default class Money extends Vue {
         tags = ['衣','食','住','行'];
         // 初始数据环境
-        record: Record = {
+        record: RecordItem = {
             selectTags: [],
             type: '-',
             note: '',
             amount: 0,
             createAt: new Date()
         }
-        recordList: Record[] = recordList;
+        recordList = recordList;
         getContent(content: string){
             this.record.amount = parseFloat(content);
             console.log(this.record.amount);
@@ -51,7 +44,7 @@
                 alert('金额是0？');
                 return;
             } else {
-                const record1: Record = JSON.parse(JSON.stringify(this.record));
+                const record1 = model.clone(this.record)
                 record1.createAt = new Date();
                 this.recordList.push(record1);
             }
@@ -59,7 +52,7 @@
 
         @Watch('recordList')
         onRecordListChange(){
-            window.localStorage.setItem(dbName,JSON.stringify(this.recordList));
+            model.save(this.recordList)
         }
 
     }
