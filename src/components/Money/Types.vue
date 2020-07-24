@@ -9,17 +9,23 @@
 
 <script lang='ts'>
     import Vue from 'vue';
-    import { Component } from 'vue-property-decorator';
+    import { Component, Prop } from 'vue-property-decorator';
     @Component
     export default class Types extends Vue {
-        type = '-';
-        selectType(type: string){
-            if (type !== '-' && type !== '+') {
-                new Error('type is unknown');
-            } else {
-                this.type = type;
-            }
+        // type 应该由外部指定
+        //type = '-';
+        @Prop(String) type!: string;
+        selectType(type: string) {
+            this.$emit('update:type',type);
         }
+
+        // selectType(type: string){
+        //     if (type !== '-' && type !== '+') {
+        //         new Error('type is unknown');
+        //     } else {
+        //         this.type = type;
+        //     }
+        // }
     }
 </script>
 

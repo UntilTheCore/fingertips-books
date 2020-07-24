@@ -22,16 +22,16 @@
 
 <script lang='ts'>
     import Vue from 'vue';
-    import { Component } from 'vue-property-decorator';
+    import { Component, Prop } from 'vue-property-decorator';
 
     @Component
     export default class NumberPad extends Vue {
-        outputContent = '0';
+        @Prop(Number) readonly content!: number;
+        outputContent = this.content.toString();
 
         getInput(event: MouseEvent | TouchEvent) {
             const target = (event.target as HTMLButtonElement);
             const inputContent = target.textContent as string;
-            console.log(inputContent);
 
             if ( this.outputContent.length >= 16 ) {
                 return;
@@ -62,7 +62,7 @@
         }
 
         ok() {
-            return;
+            this.$emit('update:content',this.outputContent);
         }
     }
 </script>
