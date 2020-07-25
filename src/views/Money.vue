@@ -16,8 +16,9 @@
     import Notes from '@/components/Money/Notes.vue';
     import Tags from '@/components/Money/Tags.vue';
     import { Component, Watch } from 'vue-property-decorator';
-    import model from '@/model';
-    const recordList = model.fetch()
+    import recordListModel from '@/model/recordListModel';
+    import tagListModel from '@/model/tagListModel';
+    const recordList = recordListModel.fetch()
 
     @Component({
         components: {
@@ -25,7 +26,7 @@
         }
     })
     export default class Money extends Vue {
-        tags = ['衣','食','住','行'];
+        tags: string[] = [];
         // 初始数据环境
         record: RecordItem = {
             selectTags: [],
@@ -35,16 +36,18 @@
             createAt: new Date()
         }
         recordList = recordList;
+        created() {
+            this.tags = tagListModel.data;
+        }
         getContent(content: string){
             this.record.amount = parseFloat(content);
-            console.log(this.record.amount);
         }
         saveData() {
             if(this.record.amount === 0) {
                 alert('金额是0？');
                 return;
             } else {
-                const record1 = model.clone(this.record)
+                const record1 = recordListModel.clone(this.record)
                 record1.createAt = new Date();
                 this.recordList.push(record1);
             }
@@ -52,7 +55,7 @@
 
         @Watch('recordList')
         onRecordListChange(){
-            model.save(this.recordList)
+            recordListModel.save(this.recordList)
         }
 
     }

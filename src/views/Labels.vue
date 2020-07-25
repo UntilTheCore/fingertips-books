@@ -2,32 +2,44 @@
     <Layout class-prefix="label-bgc">
         <div class="tags">
             <ul>
-                <li>
-                    <span>衣</span>
-                    <Icon name="right"/>
-                </li>
-                <li>
-                    <span>食</span>
-                    <Icon name="right"/>
-                </li>
-                <li>
-                    <span>住</span>
-                    <Icon name="right"/>
-                </li>
-                <li>
-                    <span>行</span>
+                <li v-for="tag in tags" :key="tag">
+                    <span>{{tag}}</span>
                     <Icon name="right"/>
                 </li>
             </ul>
-            <div class="newTag">新建标签</div>
+            <div class="newTag" @click="createTag">新建标签</div>
         </div>
     </Layout>
 </template>
 
 <script lang='ts'>
-    export default {
-        name: 'labels'
-    };
+    import Vue from 'vue';
+    import { Component } from 'vue-property-decorator';
+    import tagListModel from '@/model/tagListModel';
+
+    @Component
+    export default class Labels extends Vue {
+        tags: string[] = [];
+
+        created(){
+            tagListModel.fetch();
+            this.tags = tagListModel.data;
+        }
+
+        createTag() {
+            const content = window.prompt('请输入标签名:');
+            if(content && content.trim() !== '') {
+                const res = tagListModel.create(content.trim());
+                if(res === 'duplicate'){
+                    alert('标签名重复!');
+                }else {
+                    alert('创建成功!');
+                }
+            } else {
+                alert('标签名不能为空!');
+            }
+        }
+    }
 </script>
 
 <style>
