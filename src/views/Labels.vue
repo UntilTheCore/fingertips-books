@@ -1,12 +1,12 @@
 <template>
     <Layout class-prefix="label-bgc">
         <div class="tags">
-            <ul>
-                <li v-for="tag in tags" :key="tag.id">
+            <div class="routerList">
+                <router-link class="router-link" :to="`/labels/edit/${tag.id}`" v-for="tag in tags" :key="tag.id">
                     <span>{{tag.name}}</span>
                     <Icon name="right"/>
-                </li>
-            </ul>
+                </router-link>
+            </div>
             <div class="newTag" @click="createTag">新建标签</div>
         </div>
     </Layout>
@@ -34,7 +34,7 @@
                 }else {
                     alert('创建成功!');
                 }
-            } else {
+            } else if(content === '') {
                 alert('标签名不能为空!');
             }
         }
@@ -57,11 +57,11 @@
         /*min-height: calc(var(--vh, 1vh));*/
         width: 100%;
         font-size: 16px;
-        ul {
+        > .routerList {
             width: inherit;
             padding-left: 16px;
             background-color: #fff;
-            li {
+            .router-link {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
