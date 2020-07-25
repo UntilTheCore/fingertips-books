@@ -6,9 +6,13 @@ type RecordItem = {
     createAt: Date;
 }
 
-type tagItem = {
-    data: string[];
-    fetch: () => void;
+type Tag = {
+    id: string;
+    name: string;
+}
+type TagItem = {
+    data: Tag[];
+    fetch: () => Tag[];
     save: () => void;
     create: (data: string) => 'duplicate' | 'success';
     init: () => void;

@@ -2,8 +2,8 @@
     <Layout class-prefix="label-bgc">
         <div class="tags">
             <ul>
-                <li v-for="tag in tags" :key="tag">
-                    <span>{{tag}}</span>
+                <li v-for="tag in tags" :key="tag.id">
+                    <span>{{tag.name}}</span>
                     <Icon name="right"/>
                 </li>
             </ul>
@@ -19,11 +19,10 @@
 
     @Component
     export default class Labels extends Vue {
-        tags: string[] = [];
+        tags: Tag[]= [];
 
         created(){
-            tagListModel.fetch();
-            this.tags = tagListModel.data;
+            this.tags = tagListModel.fetch();
         }
 
         createTag() {

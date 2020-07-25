@@ -26,7 +26,7 @@
         }
     })
     export default class Money extends Vue {
-        tags: string[] = [];
+        tags: Tag[] = [];
         // 初始数据环境
         record: RecordItem = {
             selectTags: [],
@@ -37,7 +37,7 @@
         }
         recordList = recordList;
         created() {
-            this.tags = tagListModel.data;
+            this.tags = tagListModel.fetch();
         }
         getContent(content: string){
             this.record.amount = parseFloat(content);
