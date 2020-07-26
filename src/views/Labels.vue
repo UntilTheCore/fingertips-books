@@ -16,6 +16,7 @@
     import Vue from 'vue';
     import { Component } from 'vue-property-decorator';
     import tagListModel from '@/model/tagListModel';
+    import tagTool from '@/lib/tag';
 
     @Component
     export default class Labels extends Vue {
@@ -25,18 +26,8 @@
             this.tags = tagListModel.fetch();
         }
 
-        createTag() {
-            const content = window.prompt('请输入标签名:');
-            if(content && content.trim() !== '') {
-                const res = tagListModel.create(content.trim());
-                if(res === 'duplicate'){
-                    alert('标签名重复!');
-                }else {
-                    alert('创建成功!');
-                }
-            } else if(content === '') {
-                alert('标签名不能为空!');
-            }
+        createTag(){
+            tagTool.create();
         }
     }
 </script>

@@ -14,6 +14,7 @@
 <script lang='ts'>
     import Vue from 'vue';
     import { Component, Prop, Watch } from 'vue-property-decorator';
+    import tagTool from '@/lib/tag';
 
     @Component
     export default class Tags extends Vue {
@@ -37,13 +38,14 @@
         }
 
         create() {
-            const content = window.prompt('请输入标签名:');
-            const tag = (content as string).trim();
-            if(tag !== '' && this.dataSource ) {
-                this.$emit('update:dataSource', [...this.dataSource, tag]);
-            } else {
-                alert('输入不能为空!');
-            }
+            tagTool.create();
+            // const content = window.prompt('请输入标签名:');
+            // const tag = (content as string).trim();
+            // if(tag !== '' && this.dataSource ) {
+            //     this.$emit('update:dataSource', [...this.dataSource, tag]);
+            // } else {
+            //     alert('输入不能为空!');
+            // }
         }
     }
 </script>
