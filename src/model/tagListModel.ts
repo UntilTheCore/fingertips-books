@@ -19,6 +19,35 @@ const tagListModel: TagItem = {
             return 'success';
         }
     },
+    update(id,name){
+        for(let i = 0; i < this.data.length; i++) {
+            if(this.data[i].id === id) {
+                if(this.data[i].name === name) {
+                    return 'duplicate';
+                }
+                this.data[i].name = name;
+                this.save();
+                return 'success';
+            }
+        }
+        return 'not found';
+    },
+    remove(id){
+       let index = -1;
+       for(let i = 0; i < this.data.length; i++ ){
+           if(this.data[i].id === id){
+               index = i;
+               break;
+           }
+       }
+       const tag = this.data.splice(index,1);
+       if(tag){
+           this.save();
+           return true;
+       }else {
+           return false;
+       }
+    },
     init(){
         if(window.localStorage.getItem(dbName) === null) {
             this.data = [

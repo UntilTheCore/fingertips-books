@@ -24,5 +24,6 @@
         color: #fff;
         border-radius: 4px;
         background: #767676;
+        cursor: pointer;
     }
 </style>

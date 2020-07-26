@@ -1,25 +1,23 @@
 <template>
     <div class="form-item">
         <label>
-            <span class="name">{{this.name}}</span>
-            <input type="text" v-model="value" :placeholder="this.placeholder">
+            <span class="name">{{name}}</span>
+            <input type="text" :value="value" @input="onValueChange($event.target.value)" :placeholder="placeholder">
         </label>
     </div>
 </template>
 
 <script lang='ts'>
     import Vue from 'vue';
-    import { Component, Prop, Watch } from 'vue-property-decorator';
+    import { Component, Prop } from 'vue-property-decorator';
     
     @Component
     export default class FormItem extends Vue {
-        @Prop(String) name!: string;
+        @Prop({required:true}) name!: string;
         @Prop(String) placeholder!: string;
-        value = '';
-        @Watch('value')
-        onValueChange(){
-            this.$emit('update:note',this.value);
-            this.$emit('update:tag',this.value);
+        @Prop({default:''}) readonly value!: string;
+        onValueChange(value: string){
+            this.$emit('update:value',value);
         }
     }
 </script>
@@ -35,15 +33,17 @@
             display: flex;
             width: 100%;
             align-items: center;
-
             .name {
-                font-size: 14px;
+                flex-shrink: 0;
                 margin-right: 10px;
             }
 
             input {
                 flex: 1;
-                height: 64px;
+                height: 32px;
+                line-height: 32px;
+                padding: 32px 0;
+                font-size: inherit;
                 background: transparent;
             }
         }

@@ -3,8 +3,8 @@
         <Layout class-prefix="layout">
             <NumberPad :content="record.amount" @update:content="getContent" @saveData="saveData"/>
             <Types :type.sync="record.type"/>
-            <FormItem :note.sync="record.note" name="备注" placeholder="请在这里输入内容"/>
-            <Tags :data-source.sync="tags" :selectTags.sync="record.selectTags"/>
+            <FormItem :value.sync="record.note" name="备注：" placeholder="请在这里输入内容"/>
+            <Tags :data-source ="tags" :selectTags.sync="record.selectTags"/>
         </Layout>
     </div>
 </template>

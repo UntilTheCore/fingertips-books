@@ -4,7 +4,7 @@
             <Icon name="left" @click.native="$router.go(-1)"/>
             <span>编辑标签</span>
         </header>
-        <FormItem class="tag" name="标签名" placeholder="在这里输入新的标签名" :tag.sync="newTag" />
+        <FormItem class="tag" name="标签名：" :value.sync="newTag" placeholder="在这里输入新的标签名" />
         <Button class="btn-remove-tag" @click="removeTag">删除标签</Button>
     </Layout>
 </template>
@@ -13,17 +13,43 @@
     import Vue from 'vue';
     import { Component, Watch } from 'vue-property-decorator';
     import FormItem from '@/components/FormItem.vue';
+    import tagListModel from '@/model/tagListModel';
     @Component({
         components: { FormItem }
     })
     export default class EditLabel extends Vue {
         newTag = '';
+        tagList: readonly Tag[] = tagListModel.fetch();
+        tagID = this.$route.params.id;
         @Watch('newTag')
         onNewTagChange() {
-            console.log(this.newTag);
+            tagListModel.update(this.tagID,this.newTag);
+        }
+        hasTag() {
+            for(let i = 0; i < this.tagList.length; i++) {
+                if(this.tagList[i].id === this.tagID) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        showTagName(){
+            const tag = this.tagList.filter(item => item.id === this.tagID)[0];
+            this.newTag = tag.name;
+        }
+        created() {
+            if(!this.hasTag())
+                this.$router.replace('/page404');
+            this.showTagName();
         }
         removeTag() {
-            console.log('remove tag');
+            const success = tagListModel.remove(this.tagID);
+            if(success){
+                alert('删除成功!');
+                this.$router.replace('/labels');
+            }else{
+                alert('删除失败!');
+            }
         }
     }
 </script>
@@ -56,7 +82,6 @@
         $tag-hei: 44px;
         height: $tag-hei;
         line-height: $tag-hei;
-        padding-left: 16px;
         background: #fff;
     }
 

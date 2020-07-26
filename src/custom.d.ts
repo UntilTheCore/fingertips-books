@@ -15,5 +15,7 @@ type TagItem = {
     fetch: () => Tag[];
     save: () => void;
     create: (data: string) => 'duplicate' | 'success';
+    update: (id: string, name: string) => 'success' | 'not found' | 'duplicate';
+    remove: (id: string) => boolean;
     init: () => void;
 }
