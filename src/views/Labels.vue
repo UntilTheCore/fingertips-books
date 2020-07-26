@@ -7,7 +7,7 @@
                     <Icon name="right"/>
                 </router-link>
             </div>
-            <div class="newTag" @click="createTag">新建标签</div>
+            <Button class="newTag" @click="createTag">新建标签</Button>
         </div>
     </Layout>
 </template>
@@ -80,12 +80,6 @@
             width: 100px;
             margin-top: 50px;
             margin-bottom: 100px;
-            line-height: 40px;
-            text-align: center;
-            background: #767676;
-            border-radius: 4px;
-            color: #fff;
-
         }
     }
 </style>

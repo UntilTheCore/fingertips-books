@@ -8,9 +8,11 @@ Vue.config.productionTip = false;
 import Nav from '@/components/Navigation.vue'
 import Layout from '@/components/Layout.vue';
 import Icon from '@/components/Icon.vue';
-Vue.component('Nav',Nav)
-Vue.component('Layout',Layout)
-Vue.component('Icon',Icon)
+import Button from '@/components/Button.vue';
+Vue.component('Nav',Nav);
+Vue.component('Layout',Layout);
+Vue.component('Icon',Icon);
+Vue.component('Button',Button);
 new Vue({
     router,
     store,

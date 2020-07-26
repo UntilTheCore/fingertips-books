@@ -5,7 +5,7 @@
             <span>编辑标签</span>
         </header>
         <FormItem class="tag" name="标签名" placeholder="在这里输入新的标签名" :tag.sync="newTag" />
-        <div class="btn-remove-tag">删除标签</div>
+        <Button class="btn-remove-tag" @click="removeTag">删除标签</Button>
     </Layout>
 </template>
 
@@ -22,8 +22,8 @@
         onNewTagChange() {
             console.log(this.newTag);
         }
-        editTag() {
-            return false;
+        removeTag() {
+            console.log('remove tag');
         }
     }
 </script>
@@ -65,13 +65,6 @@
         bottom: 90px;
         left: 50%;
         transform: translateX(-50%);
-        $btn-hei: 40px;
-        height: $btn-hei;
-        line-height: $btn-hei;
-        text-align: center;
-        width: 98px;
-        color: #fff;
-        border-radius: 4px;
-        background: #767676;
+
     }
 </style>
