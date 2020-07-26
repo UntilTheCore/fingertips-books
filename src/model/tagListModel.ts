@@ -1,3 +1,5 @@
+import generator from '@/lib/uniqueID';
+
 const dbName = 'fingertipsbooks-tagList';
 
 const tagListModel: TagItem = {
@@ -14,7 +16,8 @@ const tagListModel: TagItem = {
         if(nameList.indexOf(data) >= 0) {
             return 'duplicate';
         } else {
-            this.data.push({id:data,name:data});
+            const id: string = generator(data);
+            this.data.push({id,name:data});
             this.save();
             return 'success';
         }
@@ -51,10 +54,10 @@ const tagListModel: TagItem = {
     init(){
         if(window.localStorage.getItem(dbName) === null) {
             this.data = [
-                {id: '0',name: '衣'},
-                {id: '1',name: '食'},
-                {id: '2',name: '住'},
-                {id: '3',name: '行'},
+                {id: generator('衣'),name: '衣'},
+                {id: generator('食'),name: '食'},
+                {id: generator('住'),name: '住'},
+                {id: generator('行'),name: '行'},
             ];
             this.save();
         }
