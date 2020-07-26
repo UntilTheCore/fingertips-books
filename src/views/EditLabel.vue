@@ -4,20 +4,24 @@
             <Icon name="left" @click.native="$router.go(-1)"/>
             <span>编辑标签</span>
         </header>
-        <div @click="editTag" class="tag">
-            <span>标签名：</span>
-            {{$route.params}}
-        </div>
+        <FormItem class="tag" name="标签名" placeholder="在这里输入新的标签名" :tag.sync="newTag" />
         <div class="btn-remove-tag">删除标签</div>
     </Layout>
 </template>
 
 <script lang='ts'>
     import Vue from 'vue';
-    import { Component } from 'vue-property-decorator';
-
-    @Component
+    import { Component, Watch } from 'vue-property-decorator';
+    import FormItem from '@/components/FormItem.vue';
+    @Component({
+        components: { FormItem }
+    })
     export default class EditLabel extends Vue {
+        newTag = '';
+        @Watch('newTag')
+        onNewTagChange() {
+            console.log(this.newTag);
+        }
         editTag() {
             return false;
         }

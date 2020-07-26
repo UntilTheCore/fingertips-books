@@ -2,8 +2,8 @@
     <div class="money">
         <Layout class-prefix="layout">
             <NumberPad :content="record.amount" @update:content="getContent" @saveData="saveData"/>
-            <Types :type.sync="record.type" />
-            <Notes :note.sync="record.note"/>
+            <Types :type.sync="record.type"/>
+            <FormItem :note.sync="record.note" name="备注" placeholder="请在这里输入内容"/>
             <Tags :data-source.sync="tags" :selectTags.sync="record.selectTags"/>
         </Layout>
     </div>
@@ -13,16 +13,18 @@
     import Vue from 'vue';
     import NumberPad from '@/components/Money/NumberPad.vue';
     import Types from '@/components/Money/Types.vue';
-    import Notes from '@/components/Money/Notes.vue';
+    // import Notes from '@/components/Money/Notes.vue';
     import Tags from '@/components/Money/Tags.vue';
     import { Component, Watch } from 'vue-property-decorator';
     import recordListModel from '@/model/recordListModel';
     import tagListModel from '@/model/tagListModel';
-    const recordList = recordListModel.fetch()
+    import FormItem from '@/components/FormItem.vue';
+
+    const recordList = recordListModel.fetch();
 
     @Component({
         components: {
-            Tags, Notes, Types, NumberPad
+            FormItem, Tags, Types, NumberPad
         }
     })
     export default class Money extends Vue {
@@ -34,28 +36,31 @@
             note: '',
             amount: 0,
             createAt: new Date()
-        }
+        };
         recordList = recordList;
+
         created() {
             this.tags = tagListModel.fetch();
         }
-        getContent(content: string){
+
+        getContent(content: string) {
             this.record.amount = parseFloat(content);
         }
+
         saveData() {
-            if(this.record.amount === 0) {
+            if ( this.record.amount === 0 ) {
                 alert('金额是0？');
                 return;
             } else {
-                const record1 = recordListModel.clone(this.record)
+                const record1 = recordListModel.clone(this.record);
                 record1.createAt = new Date();
                 this.recordList.push(record1);
             }
         }
 
         @Watch('recordList')
-        onRecordListChange(){
-            recordListModel.save(this.recordList)
+        onRecordListChange() {
+            recordListModel.save(this.recordList);
         }
 
     }
