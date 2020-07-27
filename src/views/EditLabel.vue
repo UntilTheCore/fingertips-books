@@ -50,8 +50,9 @@
             this.$store.commit('setCurrentTag',this.tagID);
             if(!this.currentTag) {
                 this.$router.replace('/page404');
+            }else {
+                this.newTag = this.currentTag.name;
             }
-            this.newTag = this.currentTag.name;
         }
 
         removeTag() {

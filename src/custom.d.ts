@@ -19,3 +19,11 @@ type TagItem = {
     remove: (id: string) => boolean;
     init: () => void;
 }
+
+type TabsDataType = {
+    id: string;
+    value: string;
+}
+
+// 相当于: type OmitUser = { age: number; name: string; }
+// type OmitUser = Omit<TabsDataType, 'id'>;
