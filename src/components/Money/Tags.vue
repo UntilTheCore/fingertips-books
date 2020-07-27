@@ -6,18 +6,18 @@
             </li>
         </ul>
         <div class="new">
-            <button @click="create">新增标签</button>
+            <button @click="createTag">新增标签</button>
         </div>
     </div>
 </template>
 
 <script lang='ts'>
-    import Vue from 'vue';
     import { Component, Prop, Watch } from 'vue-property-decorator';
-    import tagTool from '@/lib/tag';
+    import { mixins } from 'vue-class-component';
+    import TagHelper from '@/mixins/TagHelper';
 
     @Component
-    export default class Tags extends Vue {
+    export default class Tags extends mixins(TagHelper){
         @Prop(Array) readonly dataSource: Tag[] | undefined;
         @Watch('selectedTags')
         onSelectedTagsChange(){
@@ -26,26 +26,12 @@
         selectedTags: Tag[] = [];
 
         toggle(tag: Tag) {
-            // const nameList = this.selectedTags.map(item => item.name);
-
-            // const index = nameList.indexOf(tag.name);
             const index = this.selectedTags.indexOf(tag);
             if ( index >= 0 ) {
                 this.selectedTags.splice(index, 1);
             } else {
                 this.selectedTags.push(tag);
             }
-        }
-
-        create() {
-            tagTool.create();
-            // const content = window.prompt('请输入标签名:');
-            // const tag = (content as string).trim();
-            // if(tag !== '' && this.dataSource ) {
-            //     this.$emit('update:dataSource', [...this.dataSource, tag]);
-            // } else {
-            //     alert('输入不能为空!');
-            // }
         }
     }
 </script>
