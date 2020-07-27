@@ -4,8 +4,8 @@
             <Icon name="left" @click.native="$router.go(-1)"/>
             <span>编辑标签</span>
         </header>
-        <FormItem class="tag" name="标签名：" :value.sync="newTag" placeholder="在这里输入新的标签名" />
-        <Button class="btn-remove-tag" @click="$store.commit('removeTagById',$route.params.id)">删除标签</Button>
+        <FormItem class="tag" name="标签名：" :value.sync="newTag" placeholder="在这里输入新的标签名"/>
+        <Button class="btn-remove-tag" @click="removeTag">删除标签</Button>
     </Layout>
 </template>
 
@@ -13,41 +13,56 @@
     import Vue from 'vue';
     import { Component, Watch } from 'vue-property-decorator';
     import FormItem from '@/components/FormItem.vue';
+
     @Component({
         components: { FormItem }
     })
     export default class EditLabel extends Vue {
-        newTag = '';
+
         get tagList(): Tag[] {
             return this.$store.state.tagList;
         }
-        // tagList: readonly Tag[] = tagListModel.fetch();
-        tagID = this.$route.params.id;
+
+        get currentTag() {
+            return this.$store.state.currentTag;
+        }
+
+        set currentTag(value) {
+            this.$store.state.currentTag = value;
+        }
+
+        tagID = '';
+        newTag = '';
+
         @Watch('newTag')
         onNewTagChange() {
-            // tagListModel.update(this.tagID,this.newTag);
             const newTag: Tag = {
                 id: this.tagID,
                 name: this.newTag
-            }
-            this.$store.commit('updateTag',newTag);
+            };
+            this.$store.commit('updateTag', newTag);
         }
-        hasTag() {
-            for(let i = 0; i < this.tagList.length; i++) {
-                if(this.tagList[i].id === this.tagID) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        showTagName(){
-            const tag = this.tagList.filter(item => item.id === this.tagID)[0];
-            this.newTag = tag.name;
-        }
+
+        // 组件被创建时判断id在数据是否存在，没有则跳转404。
         created() {
-            if(!this.hasTag())
+            this.tagID = this.$route.params.id;
+            this.$store.commit('fetchTagList');
+            this.$store.commit('setCurrentTag',this.tagID);
+            if(!this.currentTag) {
                 this.$router.replace('/page404');
-            this.showTagName();
+            }
+            this.newTag = this.currentTag.name;
+        }
+
+        removeTag() {
+            this.$store.commit('removeTagById', this.tagID);
+            if ( this.currentTag ) {
+                alert('删除成功!');
+                this.currentTag = undefined;
+                this.$router.replace('/labels');
+            } else {
+                alert('删除失败!');
+            }
         }
     }
 </script>
@@ -59,7 +74,7 @@
 </style>
 
 <style lang='scss' scoped>
-    
+
     header {
         $hgt: 48px;
         position: relative;
@@ -68,6 +83,7 @@
         text-align: center;
         line-height: $hgt;
         margin-bottom: 8px;
+
         svg {
             position: absolute;
             left: 16px;
