@@ -13,21 +13,20 @@
 </template>
 
 <script lang='ts'>
-    import Vue from 'vue';
     import { Component } from 'vue-property-decorator';
-    import tagListModel from '@/model/tagListModel';
-    import tagTool from '@/lib/tag';
+    import { mixins } from 'vue-class-component';
+    import TagHelper from '@/mixins/TagHelper';
 
-    @Component
-    export default class Labels extends Vue {
-        tags: Tag[]= [];
-
-        created(){
-            this.tags = tagListModel.fetch();
+    @Component({
+        computed: {
+            tags(){
+                return this.$store.state.tagList;
+            }
         }
-
-        createTag(){
-            tagTool.create();
+    })
+    export default class Labels extends mixins(TagHelper){
+        created(){
+            this.$store.commit('fetchTagList');
         }
     }
 </script>

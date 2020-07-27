@@ -5,7 +5,7 @@
             <span>编辑标签</span>
         </header>
         <FormItem class="tag" name="标签名：" :value.sync="newTag" placeholder="在这里输入新的标签名" />
-        <Button class="btn-remove-tag" @click="removeTag">删除标签</Button>
+        <Button class="btn-remove-tag" @click="$store.commit('removeTagById',$route.params.id)">删除标签</Button>
     </Layout>
 </template>
 
@@ -13,17 +13,24 @@
     import Vue from 'vue';
     import { Component, Watch } from 'vue-property-decorator';
     import FormItem from '@/components/FormItem.vue';
-    import tagListModel from '@/model/tagListModel';
     @Component({
         components: { FormItem }
     })
     export default class EditLabel extends Vue {
         newTag = '';
-        tagList: readonly Tag[] = tagListModel.fetch();
+        get tagList(): Tag[] {
+            return this.$store.state.tagList;
+        }
+        // tagList: readonly Tag[] = tagListModel.fetch();
         tagID = this.$route.params.id;
         @Watch('newTag')
         onNewTagChange() {
-            tagListModel.update(this.tagID,this.newTag);
+            // tagListModel.update(this.tagID,this.newTag);
+            const newTag: Tag = {
+                id: this.tagID,
+                name: this.newTag
+            }
+            this.$store.commit('updateTag',newTag);
         }
         hasTag() {
             for(let i = 0; i < this.tagList.length; i++) {
@@ -41,15 +48,6 @@
             if(!this.hasTag())
                 this.$router.replace('/page404');
             this.showTagName();
-        }
-        removeTag() {
-            const success = tagListModel.remove(this.tagID);
-            if(success){
-                alert('删除成功!');
-                this.$router.replace('/labels');
-            }else{
-                alert('删除失败!');
-            }
         }
     }
 </script>

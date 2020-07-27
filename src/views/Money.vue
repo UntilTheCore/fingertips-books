@@ -13,14 +13,9 @@
     import Vue from 'vue';
     import NumberPad from '@/components/Money/NumberPad.vue';
     import Types from '@/components/Money/Types.vue';
-    // import Notes from '@/components/Money/Notes.vue';
     import Tags from '@/components/Money/Tags.vue';
-    import { Component, Watch } from 'vue-property-decorator';
-    import recordListModel from '@/model/recordListModel';
-    import tagListModel from '@/model/tagListModel';
+    import { Component } from 'vue-property-decorator';
     import FormItem from '@/components/FormItem.vue';
-
-    const recordList = recordListModel.fetch();
 
     @Component({
         components: {
@@ -28,7 +23,16 @@
         }
     })
     export default class Money extends Vue {
-        tags: Tag[] = [];
+        get recordList() {
+            return this.$store.state.recordList;
+        }
+        get tags() {
+            return this.$store.state.tagList;
+        }
+        created() {
+            this.$store.commit('fetchRecordList');
+            this.$store.commit('fetchTagList');
+        }
         // 初始数据环境
         record: RecordItem = {
             selectTags: [],
@@ -37,11 +41,6 @@
             amount: 0,
             createAt: new Date()
         };
-        recordList = recordList;
-
-        created() {
-            this.tags = tagListModel.fetch();
-        }
 
         getContent(content: string) {
             this.record.amount = parseFloat(content);
@@ -52,17 +51,9 @@
                 alert('金额是0？');
                 return;
             } else {
-                const record1 = recordListModel.clone(this.record);
-                record1.createAt = new Date();
-                this.recordList.push(record1);
+                this.$store.commit('createRecord',this.record);
             }
         }
-
-        @Watch('recordList')
-        onRecordListChange() {
-            recordListModel.save(this.recordList);
-        }
-
     }
 </script>
 
