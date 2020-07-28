@@ -1,5 +1,5 @@
 type RecordItem = {
-    selectTags: string[];
+    selectTags: Tag[];
     type: string;
     note: string;
     amount: number;
