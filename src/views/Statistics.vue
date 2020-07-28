@@ -77,6 +77,7 @@
     import { Component } from 'vue-property-decorator';
     import Types from '@/components/Money/Types.vue';
     import dayjs from 'dayjs';
+    import clone from '@/lib/clone';
 
     type hashTableValue = { title: string; items: RecordItem[] };
 
@@ -94,18 +95,27 @@
         get resultByDay() {
             const { recordList } = this;
 
-            const hashTable: { [key: string]: hashTableValue } = {};
-
-            for (let i = 0; i < recordList.length; i++) {
-                const title = recordList[i].createAt.split('T')[0];
-                hashTable[title] = hashTable[title] || { title: title, items: [] };
-                hashTable[title].items.push(recordList[i]);
+            type hashTableType = {
+                title: string;
+                items: RecordItem[];
             }
-            return hashTable;
+            const newList = clone(recordList).sort((a,b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf() );
+
+            const result: hashTableType[] = [{title: dayjs(newList[0].createAt).format('YYYY-MM-DD'),items:[newList[0]]}];
+            for( let i = 0; i < newList.length; i++) {
+                const current = newList[i];
+                const last = result[result.length - 1];
+                if(dayjs(last.title).isSame(current.createAt,'day')) {
+                   last.items.push(current);
+                } else {
+                    result.push({title:dayjs(current.createAt).format('YYYY-MM-DD'),items:[current]});
+                }
+            }
+            console.log(result);
+            return result;
         }
 
         beautifyTime(str: string) {
-            const days = ['今天', '昨天', '前天'];
             const api = dayjs(str);
             const now = dayjs();
             if ( api.isSame(now, 'day') ) {
@@ -116,9 +126,9 @@
                 return '前天';
             } else {
                 if(api.isSame(now,'year')) {
-                    return dayjs(str).format('M-D');
+                    return dayjs(str).format('M月D日');
                 } else {
-                    return days(str).format('YYYY-M-D');
+                    return dayjs(str).format('YYYY年M月D日');
                 }
             }
         }

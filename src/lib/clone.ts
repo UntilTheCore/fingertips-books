@@ -1,3 +1,3 @@
-export default function clone(data: RecordItem) {
-    return JSON.parse(JSON.stringify(data)) as RecordItem;
+export default function clone<T>(data: T): T {
+    return JSON.parse(JSON.stringify(data));
 }
