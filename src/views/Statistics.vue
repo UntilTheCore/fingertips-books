@@ -1,18 +1,75 @@
 <template>
     <div class="statistics">
         <Layout>
-            <Tabs :data-source="type" :type.sync="tabSelect1"/>
-            <Tabs class="tabs" prefix-class="xxx" :data-source="interval" :type.sync="tabSelect2"/>
-            <div v-for="(group,index) in resultByDay" :key="index">
-                <h3>{{group.title}}</h3>
-                <div v-for="(item,index) in group.items" :key="index">
-                    {{item.amount}}
-                </div>
-            </div>
+            <template v-slot:header>
+                <Tabs :data-source="type" :type.sync="tabSelect1" />
+                <Tabs class="tabs" prefix-class="interval" :data-source="interval" :type.sync="tabSelect2" />
+            </template>
+            <ul class="container">
+                <li v-for="(group,index) in resultByDay" :key="index">
+                    <h3 class="title">{{group.title}}</h3>
+                    <ul >
+                        <li v-for="(item,index) in group.items" :key="index" class="item">
+                            <span>{{item.selectTags.name || '无'}}</span>
+                            <span class="note">{{item.note}}</span>
+                            <span>￥{{item.amount}}</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </Layout>
     </div>
 </template>
 
+<style lang='scss' scoped>
+
+    /* 控制 Layout > content 背景色 */
+    ::v-deep .content {
+        background : #f5f5f5;
+    }
+
+    ::v-deep li {
+        &.selected {
+            background : #fff;
+        }
+    }
+
+    .tabs ::v-deep .interval-content {
+        height : 32px;
+    }
+
+    .container {
+
+        padding : 0 12px;
+        %style {
+            height      : 40px;
+            line-height : 40px;
+        }
+
+        ul {
+            border-radius: 15px;
+            padding : 0 10px;
+            background : #93ffce;
+        }
+
+        .title {
+            @extend %style;
+        }
+
+        li.item {
+            display : flex;
+            justify-content : space-between;
+            @extend %style;
+
+            .note {
+                margin-right : auto;
+                padding-left : 16px;
+                color : #999999;
+            }
+        }
+
+    }
+</style>
 <script lang='ts'>
     import Vue from 'vue';
     import Tabs from '@/components/Tabs.vue';
@@ -67,15 +124,4 @@
 
 </script>
 
-<style lang='scss' scoped>
-    ::v-deep li {
-        &.selected {
-            background: #fff;
-        }
-    }
 
-    .tabs ::v-deep .xxx-content {
-        height: 32px;
-    }
-
-</style>
