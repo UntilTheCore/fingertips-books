@@ -47,10 +47,10 @@
         created() {
             this.tagID = this.$route.params.id;
             this.$store.commit('fetchTagList');
-            this.$store.commit('setCurrentTag',this.tagID);
-            if(!this.currentTag) {
+            this.$store.commit('setCurrentTag', this.tagID);
+            if ( !this.currentTag ) {
                 this.$router.replace('/page404');
-            }else {
+            } else {
                 this.newTag = this.currentTag.name;
             }
         }

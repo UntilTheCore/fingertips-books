@@ -3,7 +3,7 @@ type RecordItem = {
     type: string;
     note: string;
     amount: number;
-    createAt: Date;
+    createAt: string;
 }
 
 type Tag = {
@@ -27,3 +27,9 @@ type TabsDataType = {
 
 // 相当于: type OmitUser = { age: number; name: string; }
 // type OmitUser = Omit<TabsDataType, 'id'>;
+
+type rootState = {
+    recordList: RecordItem[];
+    tagList: Tag[];
+    currentTag: Tag | undefined;
+}

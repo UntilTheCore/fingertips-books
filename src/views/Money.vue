@@ -39,7 +39,7 @@
             type: '-',
             note: '',
             amount: 0,
-            createAt: new Date()
+            createAt: new Date().toISOString()
         };
 
         getContent(content: string) {
