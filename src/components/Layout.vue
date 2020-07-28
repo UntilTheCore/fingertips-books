@@ -1,5 +1,7 @@
 <template>
     <div class="layout">
+        <!-- 上中下三段式布局，按需使用header具名插槽 -->
+        <slot name="header" />
         <div class="content" :class="classPrefix && `${classPrefix}-content`">
             <slot />
         </div>
