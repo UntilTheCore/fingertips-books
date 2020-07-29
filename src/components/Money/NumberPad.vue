@@ -22,12 +22,17 @@
 
 <script lang='ts'>
     import Vue from 'vue';
-    import { Component, Prop } from 'vue-property-decorator';
+    import { Component, Prop, Watch } from 'vue-property-decorator';
 
     @Component
     export default class NumberPad extends Vue {
         @Prop(Number) readonly content!: number;
-        outputContent = this.content.toString();
+        outputContent = '';
+
+        @Watch('content', { immediate: true })
+        onContentChange() {
+            this.outputContent = this.content.toString();
+        }
 
         getInput(event: MouseEvent | TouchEvent) {
             const target = (event.target as HTMLButtonElement);
@@ -36,24 +41,32 @@
             if ( this.outputContent.length >= 16 ) {
                 return;
             }
-            if (this.outputContent.length === 16) { return; }
-            if (this.outputContent === '0') {
-                if ('0123456789'.indexOf(inputContent) >= 0) {
+            if ( this.outputContent.length === 16 ) {
+                return;
+            }
+            if ( this.outputContent === '0' ) {
+                if ( '0123456789'.indexOf(inputContent) >= 0 ) {
                     this.outputContent = inputContent;
                 } else {
                     this.outputContent += inputContent;
                 }
                 return;
             }
-            if (this.outputContent.indexOf('.') >= 0 && inputContent === '.') {return;}
+            if ( this.outputContent.indexOf('.') >= 0 ) {
+                if ( inputContent === '.' ) {
+                    return;
+                } else if ( this.outputContent.split('.')[1].length >= 2 ) {
+                    return;
+                }
+            }
             this.outputContent += inputContent;
         }
 
         deleteContent() {
-            if (this.outputContent.length === 1) {
-                this.outputContent= '0';
+            if ( this.outputContent.length === 1 ) {
+                this.outputContent = '0';
             } else {
-                this.outputContent= this.outputContent.slice(0, -1);
+                this.outputContent = this.outputContent.slice(0, -1);
             }
         }
 
@@ -62,9 +75,8 @@
         }
 
         ok() {
-            this.$emit('update:content',this.outputContent);
+            this.$emit('update:content', parseFloat(this.outputContent));
             this.$emit('saveData');
-            this.outputContent = '0';
         }
     }
 </script>
@@ -74,12 +86,12 @@
 
     .numberPad {
         .output {
-            height: 72px;
-            line-height: 72px;
-            text-align: right;
-            padding-right: 10px;
-            font-size: 36px;
-            font-family: Consolas, monospace;
+            height        : 72px;
+            line-height   : 72px;
+            text-align    : right;
+            padding-right : 10px;
+            font-size     : 36px;
+            font-family   : Consolas, monospace;
             @extend %innerShadow;
         }
 
@@ -87,58 +99,58 @@
             @extend %clearFix;
 
             button {
-                display: block;
-                width: 25%;
-                height: 64px;
-                float: left;
-                font-size: 16px;
-                background: transparent;
-                font-weight: bold;
+                display     : block;
+                width       : 25%;
+                height      : 64px;
+                float       : left;
+                font-size   : 16px;
+                background  : transparent;
+                font-weight : bold;
 
                 &.ok {
-                    height: 128px;
-                    float: right;
+                    height : 128px;
+                    float  : right;
                 }
 
                 &.zero {
-                    width: 50%;
+                    width : 50%;
                 }
 
-                $bgc: #f2f2f2;
+                $bgc        : #f2f2f2;
 
                 &:nth-child(1) {
-                    background: $bgc;
+                    background : $bgc;
                 }
 
                 &:nth-child(2),
                 &:nth-child(5) {
-                    background: darken($bgc, 4%);
+                    background : darken($bgc, 4%);
                 }
 
                 &:nth-child(3),
                 &:nth-child(6),
                 &:nth-child(9) {
-                    background: darken($bgc, 8%);
+                    background : darken($bgc, 8%);
                 }
 
                 &:nth-child(4),
                 &:nth-child(7),
                 &:nth-child(10), {
-                    background: darken($bgc, 12%);
+                    background : darken($bgc, 12%);
                 }
 
                 &:nth-child(8),
                 &:nth-child(11),
                 &:nth-child(13) {
-                    background: darken($bgc, 16%);
+                    background : darken($bgc, 16%);
                 }
 
                 &:nth-child(14) {
-                    background: darken($bgc, 20%);
+                    background : darken($bgc, 20%);
                 }
 
                 &:nth-child(12) {
-                    background: darken($bgc, 24%);
+                    background : darken($bgc, 24%);
                 }
             }
         }

@@ -1,7 +1,7 @@
 <template>
     <div class="money">
         <Layout class-prefix="layout">
-            <NumberPad :content="record.amount" @update:content="getContent" @saveData="saveData"/>
+            <NumberPad :content.sync="record.amount"  @saveData="saveData"/>
             <Types :type.sync="record.type"/>
             <FormItem :value.sync="record.note" name="备注：" placeholder="请在这里输入内容"/>
             <Tags :data-source ="tags" :selectTags.sync="record.selectTags"/>
@@ -42,16 +42,19 @@
             createAt: new Date().toISOString()
         };
 
-        getContent(content: string) {
-            this.record.amount = parseFloat(content);
-        }
-
         saveData() {
             if ( this.record.amount === 0 ) {
                 alert('金额是0？');
                 return;
+            } else if( this.record.selectTags.length  === 0) {
+                return alert('至少选择一个标签!');
             } else {
                 this.$store.commit('createRecord',this.record);
+                this.$nextTick( () => {
+                    this.record.note = '';
+                    this.record.amount = 0;
+                    alert('记账成功！');
+                });
             }
         }
     }

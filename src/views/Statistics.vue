@@ -10,7 +10,7 @@
                     <li v-for="(group,index) in resultByDay" :key="index">
                         <h3 class="title">
                             <span>{{beautifyTime(group.title)}}</span>
-                            <span>合计:￥{{group.total}}</span>
+                            <span>合计:￥{{group.total.toFixed(2)}}</span>
                         </h3>
                         <ul>
                             <li v-for="(item,index) in group.items" :key="index" class="item">
@@ -173,9 +173,18 @@
         resultSelectTag(data: Tag[]) {
             let result = '';
             data.forEach(item => {
-                result += item.name;
+                if(data.length <= 1) {
+                    result += item.name;
+                } else {
+                    result += ',';
+                    result += item.name;
+                }
             });
-            return result;
+            if( data.length <= 1 ){
+                return result;
+            } else {
+                return result.substring(1);
+            }
         }
 
         created() {
