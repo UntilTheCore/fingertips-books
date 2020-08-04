@@ -2,7 +2,7 @@
     <div class="form-item">
         <label>
             <span class="name">{{name}}</span>
-            <input type="text" :value="value" @input="onValueChange($event.target.value)" :placeholder="placeholder">
+            <input :type="type" :value="value" @input="onValueChange($event.target.value)" :placeholder="placeholder">
         </label>
     </div>
 </template>
@@ -14,8 +14,9 @@
     @Component
     export default class FormItem extends Vue {
         @Prop({required:true}) name!: string;
-        @Prop(String) placeholder!: string;
+        @Prop({default:'',type:String}) placeholder!: string;
         @Prop({default:''}) readonly value!: string;
+        @Prop({required:true,type:String,default:'text'}) type!: string;
         onValueChange(value: string){
             this.$emit('update:value',value);
         }
@@ -39,10 +40,11 @@
             }
 
             input {
+                $height: 20px;
                 flex: 1;
-                height: 32px;
-                line-height: 32px;
-                padding: 32px 0;
+                height: $height;
+                line-height: $height;
+                padding: $height 0;
                 font-size: inherit;
                 background: transparent;
             }

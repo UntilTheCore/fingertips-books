@@ -3,7 +3,8 @@
         <Layout class-prefix="layout">
             <NumberPad :content.sync="record.amount"  @saveData="saveData"/>
             <Types :type.sync="record.type"/>
-            <FormItem :value.sync="record.note" name="备注：" placeholder="请在这里输入内容"/>
+            <FormItem type="datetime-local" name="时间：" :value="createAt" @update:value="saveCreateAt"></FormItem>
+            <FormItem type="text" :value.sync="record.note" name="备注：" placeholder="请在这里输入内容"/>
             <Tags :data-source ="tags" :selectTags.sync="record.selectTags"/>
         </Layout>
     </div>
@@ -16,6 +17,7 @@
     import Tags from '@/components/Money/Tags.vue';
     import { Component } from 'vue-property-decorator';
     import FormItem from '@/components/FormItem.vue';
+    import dayjs from 'dayjs';
 
     @Component({
         components: {
@@ -23,6 +25,10 @@
         }
     })
     export default class Money extends Vue {
+        // 进入此组件时给时间控件设置默认时间
+        get createAt() {
+            return dayjs(new Date()).format().split(':',2).join(':');
+        }
         get recordList() {
             return this.$store.state.recordList;
         }
@@ -39,8 +45,12 @@
             type: '-',
             note: '',
             amount: 0,
-            createAt: new Date().toISOString()
+            createAt: this.createAt
         };
+
+        saveCreateAt(data: string) {
+            this.record.createAt = data;
+        }
 
         saveData() {
             if ( this.record.amount === 0 ) {
