@@ -4,7 +4,7 @@
             <Icon name="left" @click.native="$router.go(-1)"/>
             <span>编辑标签</span>
         </header>
-        <FormItem class="tag" name="标签名：" :value.sync="newTag" placeholder="在这里输入新的标签名"/>
+        <FormItem type="text" class="tag" name="标签名：" :value.sync="newTag" placeholder="在这里输入新的标签名"/>
         <Button class="btn-remove-tag" @click="removeTag">删除标签</Button>
     </Layout>
 </template>
