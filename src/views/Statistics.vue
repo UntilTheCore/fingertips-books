@@ -6,6 +6,9 @@
                 <!--<Tabs class="tabs" prefix-class="interval" :data-source="interval" :type.sync="tabSelect2" />-->
             </template>
             <template v-if="resultByDay">
+                <div class="chart-wrapper" ref="chartWrapper">
+                    <Chart class="chart" :options="options" width="430%"></Chart>
+                </div>
                 <ul class="container">
                     <li v-for="(group,index) in resultByDay" :key="index">
                         <h3 class="title">
@@ -45,12 +48,13 @@
     .tabs ::v-deep .interval-content {
         height : 32px;
     }
+
     .no-record {
-        position : absolute;
-        top : 50%;
-        left : 50%;
-        transform: translate(-50%,-50%);
-        white-space: nowrap;
+        position    : absolute;
+        top         : 50%;
+        left        : 50%;
+        transform   : translate(-50%, -50%);
+        white-space : nowrap;
     }
 
     .container {
@@ -83,8 +87,10 @@
                 color        : #999999;
             }
         }
-
-
+    }
+    
+    .chart-wrapper {
+        overflow : auto;
     }
 </style>
 <script lang='ts'>
@@ -94,14 +100,42 @@
     import Types from '@/components/Money/Types.vue';
     import dayjs from 'dayjs';
     import clone from '@/lib/clone';
+    import Chart from '@/components/Chart.vue';
 
     @Component({
         components: {
             Types,
             Tabs,
+            Chart,
         }
     })
     export default class Statistics extends Vue {
+        get options() {
+            return {
+                grid: {
+                    left: 0,
+                    right: 0,
+                },
+                xAxis: {
+                    type: 'category',
+                    data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+                },
+                yAxis: {
+                    type: 'value',
+                    show: false,
+                },
+                series: [{
+                    name: '支出',
+                    data: [620, 932, 901, 934, 1290, 1330, 1320,
+                        620, 932, 901, 934, 1290, 1330, 1320,
+                        620, 932, 901, 934, 1290, 1330, 1320,
+                        620, 932, 901, 934, 1290, 1330, 1320,
+                        620, 932],
+                    type: 'line'
+                }]
+            };
+        }
+
         get recordList() {
             return (this.$store.state as rootState).recordList;
         }
@@ -115,11 +149,11 @@
                 items: RecordItem[];
             }
             const cloneList = clone(recordList);
-            if(cloneList.length === 0 ){
+            if ( cloneList.length === 0 ) {
                 return false;
             }
             const filterList = cloneList.filter(r => r.type === this.incomeAndExpandType);
-            if ( filterList.length === 0) {
+            if ( filterList.length === 0 ) {
                 return false;
             }
             const newList = filterList.sort((a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
@@ -173,14 +207,14 @@
         resultSelectTag(data: Tag[]) {
             let result = '';
             data.forEach(item => {
-                if(data.length <= 1) {
+                if ( data.length <= 1 ) {
                     result += item.name;
                 } else {
                     result += ',';
                     result += item.name;
                 }
             });
-            if( data.length <= 1 ){
+            if ( data.length <= 1 ) {
                 return result;
             } else {
                 return result.substring(1);
@@ -191,6 +225,10 @@
             this.$store.commit('fetchTagList');
             this.$store.commit('fetchRecordList');
             this.$store.commit('fetchRecordList');
+        }
+
+        mounted() {
+            (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
         }
 
         // interval: TabsDataType[] = [
