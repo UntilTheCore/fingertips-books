@@ -57,6 +57,14 @@
     @import "~@/assets/styles/reset.scss";
     @import '~@/assets/styles/helper.scss';
 
+    @media screen and (min-width: 475px) {
+        body {
+            max-width : 500px;
+            box-shadow: 0 0 6px 0 #888;
+            margin-left : auto;
+            margin-right : auto;
+        }
+    }
     body {
         font-family             : $font-hei;
         font-size               : 16px;
