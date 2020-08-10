@@ -5,9 +5,8 @@
 </template>
 
 <script lang="ts">
-    export default {
-        name: 'App',
-        methods: {
+    import Vue from 'vue';
+    export default class App extends Vue{
             init(): void {
                 // 阻止双击放大
                 let lastTouchEnd = 0;
@@ -42,13 +41,12 @@
                     const vh = window.innerHeight;
                     document.documentElement.style.setProperty('--vh', `${ vh }px`);
                 });
-            }
-        },
+        }
+
         mounted(): void {
             this.init();
-        },
-
-    };
+        }
+    }
 </script>
 
 <style lang="scss">
