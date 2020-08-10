@@ -88,7 +88,7 @@
             }
         }
     }
-    
+
     .chart-wrapper {
         overflow : auto;
     }
@@ -112,19 +112,31 @@
     export default class Statistics extends Vue {
         get options() {
             return {
+                // 清除 echarts 的左右边距，使表格贴边
                 grid: {
                     left: 0,
                     right: 0,
                 },
                 xAxis: {
+                    // x 轴刻度和标记对齐
+                    axisTick: {alignWithLabel: true},
                     type: 'category',
-                    data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+                    data: [
+                        1, 2, 3, 4, 5, 6, 7,
+                        8, 9, 10, 11, 12, 13, 14,
+                        15, 16, 17, 18, 19, 20, 21,
+                        22, 23, 24, 25, 26, 27, 28,
+                        29, 30
+                    ]
                 },
                 yAxis: {
                     type: 'value',
                     show: false,
                 },
                 series: [{
+                    symbol: 'circle',
+                    symbolSize: 12,
+                    itemStyle: {borderWidth: 1, color: '#666', borderColor: '#666'},
                     name: '支出',
                     data: [620, 932, 901, 934, 1290, 1330, 1320,
                         620, 932, 901, 934, 1290, 1330, 1320,
@@ -132,7 +144,13 @@
                         620, 932, 901, 934, 1290, 1330, 1320,
                         620, 932],
                     type: 'line'
-                }]
+                }],
+                tooltip: {
+                    show: true,
+                    triggerOn: 'click',
+                    position: 'top',
+                    formatter: '{c0}',
+                }
             };
         }
 
@@ -228,7 +246,8 @@
         }
 
         mounted() {
-            (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
+            const div = (this.$refs.chartWrapper as HTMLDivElement);
+            div.scrollLeft = div.scrollWidth;
         }
 
         // interval: TabsDataType[] = [
