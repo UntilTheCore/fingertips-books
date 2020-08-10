@@ -101,6 +101,7 @@
     import dayjs from 'dayjs';
     import clone from '@/lib/clone';
     import Chart from '@/components/Chart.vue';
+    import _ from 'lodash';
 
     @Component({
         components: {
@@ -110,7 +111,34 @@
         }
     })
     export default class Statistics extends Vue {
+        // 构造 Chart 要展示的数据
+        get optionsData() {
+            // console.log(this.recordList.map(item => _.pick(item,['createAt','amount'])));
+            const today = new Date();
+            const array = [];
+            for (let i = 0; i <= 29; i++) {
+                const dataString = dayjs(today).subtract(i, 'day')
+                                               .format('YYYY-MM-DD');
+                const find = _.find(this.recordList, (item) => {
+                    return item.createAt.indexOf(dataString) === 0;
+                });
+                array.push({
+                    date: dataString,
+                    value: find ? find : 0
+                });
+            }
+            return array.reverse();
+        }
+
         get options() {
+            const keys = this.optionsData.map(item => item.date);
+            const values = this.optionsData.map(item => {
+                if ( item.value ) {
+                    return (item.value as RecordItem).amount;
+                } else {
+                    return 0;
+                }
+            });
             return {
                 // 清除 echarts 的左右边距，使表格贴边
                 grid: {
@@ -119,15 +147,9 @@
                 },
                 xAxis: {
                     // x 轴刻度和标记对齐
-                    axisTick: {alignWithLabel: true},
+                    axisTick: { alignWithLabel: true },
                     type: 'category',
-                    data: [
-                        1, 2, 3, 4, 5, 6, 7,
-                        8, 9, 10, 11, 12, 13, 14,
-                        15, 16, 17, 18, 19, 20, 21,
-                        22, 23, 24, 25, 26, 27, 28,
-                        29, 30
-                    ]
+                    data: keys
                 },
                 yAxis: {
                     type: 'value',
@@ -136,13 +158,9 @@
                 series: [{
                     symbol: 'circle',
                     symbolSize: 12,
-                    itemStyle: {borderWidth: 1, color: '#666', borderColor: '#666'},
+                    itemStyle: { borderWidth: 1, color: '#666', borderColor: '#666' },
                     name: '支出',
-                    data: [620, 932, 901, 934, 1290, 1330, 1320,
-                        620, 932, 901, 934, 1290, 1330, 1320,
-                        620, 932, 901, 934, 1290, 1330, 1320,
-                        620, 932, 901, 934, 1290, 1330, 1320,
-                        620, 932],
+                    data: values,
                     type: 'line'
                 }],
                 tooltip: {
