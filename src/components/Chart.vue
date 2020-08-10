@@ -5,7 +5,7 @@
 
 <script lang='ts'>
     import Vue from 'vue';
-    import { Component, Prop } from 'vue-property-decorator';
+    import { Component, Prop, Watch } from 'vue-property-decorator';
     import echarts from 'echarts';
     import EChartOption = echarts.EChartOption;
 
@@ -15,13 +15,15 @@
         @Prop({type:String,default:'100%'}) width!: string;
         @Prop({type:String,default:'200px'}) height!: string;
 
-        mounted() {
-            // const divChart = this.$refs.container as HTMLDivElement;
-            // const width = divChart.clientWidth;
-            // divChart.style.height = width * 0.8 + 'px';
+        myChart!: echarts.ECharts;
 
-            const myChart = echarts.init(this.$refs.container as HTMLDivElement);
-            myChart.setOption(this.options);
+        @Watch('options')
+        onOptionsChange() {
+            this.myChart.setOption(this.options);
+        }
+        mounted() {
+            this.myChart = echarts.init(this.$refs.container as HTMLDivElement);
+            this.myChart.setOption(this.options);
         }
     }
 </script>

@@ -113,15 +113,12 @@
     export default class Statistics extends Vue {
         // 构造 Chart 要展示的数据
         get optionsData() {
-            // console.log(this.recordList.map(item => _.pick(item,['createAt','amount'])));
             const today = new Date();
             const array = [];
             for (let i = 0; i <= 29; i++) {
                 const dataString = dayjs(today).subtract(i, 'day')
                                                .format('YYYY-MM-DD');
-                const find = _.find(this.recordList, (item) => {
-                    return item.createAt.indexOf(dataString) === 0;
-                });
+                const find = _.find(this.resultByDay as hashTableType[],{title : dataString});
                 array.push({
                     date: dataString,
                     value: find ? find : 0
@@ -134,7 +131,7 @@
             const keys = this.optionsData.map(item => item.date);
             const values = this.optionsData.map(item => {
                 if ( item.value ) {
-                    return (item.value as RecordItem).amount;
+                    return (item.value as hashTableType).total;
                 } else {
                     return 0;
                 }
@@ -149,7 +146,12 @@
                     // x 轴刻度和标记对齐
                     axisTick: { alignWithLabel: true },
                     type: 'category',
-                    data: keys
+                    data: keys,
+                    axisLabel: {
+                        formatter: function (value: string, index: number) {
+                            return value.substr(5);
+                        }
+                    }
                 },
                 yAxis: {
                     type: 'value',
@@ -179,11 +181,6 @@
         get resultByDay() {
             const { recordList } = this;
 
-            type hashTableType = {
-                title: string;
-                total: number;
-                items: RecordItem[];
-            }
             const cloneList = clone(recordList);
             if ( cloneList.length === 0 ) {
                 return false;

@@ -33,3 +33,9 @@ type rootState = {
     tagList: Tag[];
     currentTag: Tag | undefined;
 }
+
+type hashTableType = {
+    title: string;
+    total: number;
+    items: RecordItem[];
+}
