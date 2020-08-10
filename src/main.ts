@@ -13,6 +13,7 @@ Vue.component('Nav',Nav);
 Vue.component('Layout',Layout);
 Vue.component('Icon',Icon);
 Vue.component('Button',Button);
+console.dir(App);
 new Vue({
     router,
     store,
