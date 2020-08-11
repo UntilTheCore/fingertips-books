@@ -5,6 +5,9 @@ module.exports = {
     lintOnSave: false,
     productionSourceMap: false,
     filenameHashing: true,
+    publicPath: process.env.NODE_ENV === 'production'
+        ? '/fingertips-books-website/'
+        : '/',
     chainWebpack: config => {
         const dir = path.resolve(__dirname, 'src/assets/icons')
 

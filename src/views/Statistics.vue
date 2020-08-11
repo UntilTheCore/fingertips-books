@@ -101,12 +101,13 @@
     import dayjs from 'dayjs';
     import clone from '@/lib/clone';
     import * as _ from 'lodash';
+    import Chart from '@/components/Chart.vue';
 
     @Component({
         components: {
             Types,
             Tabs,
-            Chart: () => import('@/components/Chart.vue'),
+            Chart
         }
     })
     export default class Statistics extends Vue {
@@ -262,7 +263,10 @@
 
         mounted() {
             const div = (this.$refs.chartWrapper as HTMLDivElement);
-            div.scrollLeft = div.scrollWidth;
+            console.dir(div);
+            if ( div && div.scrollWidth > 0){
+                div.scrollLeft = div.scrollWidth;
+            }
         }
 
         // interval: TabsDataType[] = [
