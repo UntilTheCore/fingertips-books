@@ -1,10 +1,5 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Money from '@/views/Money.vue';
-import Statistics from '@/views/Statistics.vue'
-import Page404 from '@/views/Page404.vue'
-import Labels from '@/views/Labels.vue';
-import EditLabel from '@/views/EditLabel.vue';
 
 Vue.use(VueRouter);
 
@@ -16,25 +11,25 @@ const routes: Array<RouteConfig> = [
     {
       path: '/labels',
       name: 'Labels',
-      component: Labels
+      component: () => import('@/views/Labels.vue')
     },
     {
         path: '/labels/edit/:id',
-        component: EditLabel
+        component: () => import('@/views/EditLabel.vue')
     },
     {
         path: '/money',
         name: 'Money',
-        component: Money
+        component: () => import('@/views/Money.vue')
     },
     {
         path: '/statistics',
         name: 'Statistics',
-        component: Statistics
+        component: () => import('@/views/Statistics.vue')
     },{
         path: '*',
         name: '404',
-        component: Page404
+        component: () => import('@/views/Page404.vue')
     }
     
     // {

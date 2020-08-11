@@ -100,17 +100,17 @@
     import Types from '@/components/Money/Types.vue';
     import dayjs from 'dayjs';
     import clone from '@/lib/clone';
-    import Chart from '@/components/Chart.vue';
-    import _ from 'lodash';
+    import * as _ from 'lodash';
 
     @Component({
         components: {
             Types,
             Tabs,
-            Chart,
+            Chart: () => import('@/components/Chart.vue'),
         }
     })
     export default class Statistics extends Vue {
+
         // 构造 Chart 要展示的数据
         get optionsData() {
             const today = new Date();
@@ -148,7 +148,7 @@
                     type: 'category',
                     data: keys,
                     axisLabel: {
-                        formatter: function (value: string, index: number) {
+                        formatter: function (value: string) {
                             return value.substr(5);
                         }
                     }
